@@ -1,31 +1,14 @@
-import static org.junit.Assert.*;
+package T123ContactForm;
 
-import org.junit.After;
-import org.junit.Before;
+import TCommon.TCommonMain;
+
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 
-public class CommonTest {
+import static org.junit.Assert.assertTrue;
 
-    private WebDriver driver;
-
-    private WindowHandler windowHandler;
-
-    private WebElementsHandler webElementsHandler;
-
-    @Before
-    public void setUp() {
-        System.setProperty("webdriver.chrome.driver", "./src/main/resources/drivers/chromedriver.exe");
-
-        this.driver = new ChromeDriver();
-        this.windowHandler = new WindowHandler(this.driver);
-        this.webElementsHandler = new WebElementsHandler(this.driver);
-
-        this.windowHandler.goToPage("https://www.123contactform.com/");
-    }
+public class T123ContactFormMain extends TCommonMain {
 
     @Test
     public void testBasic() {
@@ -70,9 +53,4 @@ public class CommonTest {
         assertTrue(checkRules.isSelected());
     }
 
-    @After
-    public void tearDown() throws Exception {
-        // Close the browser
-        this.driver.quit();
-    }
 }

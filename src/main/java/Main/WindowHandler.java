@@ -1,18 +1,20 @@
+package Main;
+
 import static org.junit.Assert.*;
 import org.openqa.selenium.WebDriver;
 import java.util.concurrent.TimeUnit;
 
-class WindowHandler {
+public class WindowHandler {
     private WebDriver driver;
 
-    WindowHandler(WebDriver driver){
+    public WindowHandler(WebDriver driver){
         this.driver = driver;
 
         this.driver.manage().window().maximize();
         this.driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
     }
 
-    void iAmOnPage(String title){
+    public void iAmOnPage(String title){
         String parentWindowId = this.driver.getWindowHandle();
 
         try {
@@ -25,15 +27,15 @@ class WindowHandler {
         }
     }
 
-    void goToPage(String url){
+    public void goToPage(String url){
         this.driver.get(url);
     }
 
-    void switchToIframe(String iframeId){
+    public void switchToIframe(String iframeId){
         this.driver.switchTo().frame(iframeId);
     }
 
-    void switchToDefault(){
+    public void switchToDefault(){
         this.driver.switchTo().defaultContent();
     }
 }
