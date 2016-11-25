@@ -47,7 +47,7 @@ public class CommonTest {
         this.webElementsHandler.fillElementOrFail(By.name("username"), "cirtogflorin@gmail.com", "Username doesn't exist!");
         this.webElementsHandler.fillElementOrFail(By.name("password"), "tz056889", "Password is not correct!");
 
-        this.webElementsHandler.clickElementOrFail(By.name("submit-form-button"), "Submit button is not there!");
+        this.webElementsHandler.clickElementOrFail(By.id("submit-form-button"), "Submit button is not there!");
     }
 
     private void checkThatWeAreOnLoginPage() {
