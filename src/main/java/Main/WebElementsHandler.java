@@ -45,7 +45,12 @@ public class WebElementsHandler {
     }
 
     public void click(By element) {
-        this.driver.findElement(element).click();
+        if(!this.driver.findElements(element).isEmpty()){
+            this.driver.findElement(element).click();
+        }
+        else {
+            fail("NoSuchElementException: " + element.toString());
+        }
     }
 
     public void fill(By element, String value) {

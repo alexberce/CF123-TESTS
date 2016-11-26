@@ -4,32 +4,48 @@ package TCommon;
 import Main.*;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class TCommonMain {
+public abstract class TCommonMain {
 
-    protected WebDriver driver;
+    protected static WebDriver driver;
 
-    protected WindowHandler windowHandler;
+    protected static WindowHandler windowHandler;
 
-    protected WebElementsHandler webElementsHandler;
+    protected static WebElementsHandler webElementsHandler;
 
-    @Before
-    public void setUp() {
+    @BeforeClass
+    public static void setUp() {
         System.setProperty("webdriver.chrome.driver", "./src/main/resources/drivers/chromedriver.exe");
 
-        this.driver = new ChromeDriver();
-        this.windowHandler = new WindowHandler(this.driver);
-        this.webElementsHandler = new WebElementsHandler(this.driver);
-
-        this.windowHandler.goToPage("https://www.123contactform.com/");
+        TCommonMain.driver = new ChromeDriver();
+        TCommonMain.windowHandler = new WindowHandler(TCommonMain.driver);
+        TCommonMain.webElementsHandler = new WebElementsHandler(TCommonMain.driver);
     }
 
+    @Before
+    public abstract void runBeforeTestMethod();
 
     @After
-    public void tearDown() throws Exception {
-        // Close the browser
-        this.driver.quit();
+    public abstract void runAfterTestMethod();
+
+    @AfterClass
+    public static void tearDown() throws Exception {
+        TCommonMain.driver.quit();
+    }
+
+    public WebDriver getDriver(){
+        return TCommonMain.driver;
+    }
+
+    public WindowHandler getWindowHandler(){
+        return TCommonMain.windowHandler;
+    }
+
+    public WebElementsHandler getWebElementsHandler(){
+        return TCommonMain.webElementsHandler;
     }
 }
