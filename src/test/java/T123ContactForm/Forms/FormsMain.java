@@ -15,26 +15,24 @@ import Main.UnorderedList;
 import T123ContactForm.T123ContactFormMain;
 
 public class FormsMain extends T123ContactFormMain {
-	@Test
-	public void testDropdown() {
-		driver.findElement(By.className("dropdown-toggle")).click();
-		// Get the Dropdown as a UnorderedList using is's class Name
-		UnorderedList newForm = new UnorderedList(driver.findElement(By.className("dropdown-menu")));
 
-		// Verify Dropdown has eight forms for selection
-		assertEquals(8, newForm.getOptions().size());
+    @Test
+    public void testDropdown() {
 
-		// Verify Dropdown has expected values as listed in a array
-		List<String> exp_options = Arrays.asList("Contact & Lead Form", "Survey", "Event Registration Form",
-				"Order Form", "Quiz", "Poll", "Blank Form", "Other Form");
-		List<String> act_options = new ArrayList<String>();
+        this.getWebElementsHandler().click(By.className("dropdown-toggle"));
 
-		// Retrive the option values from Dropdown using getOptions() method
-		for (WebElement option : newForm.getOptions()) {
-			act_options.add(option.getText());
-		}
+        UnorderedList newFormButton = new UnorderedList(this.getDriver().findElement(By.className("dropdown-menu")));
 
-		// Verify expected options array and actual options array match
-		assertArrayEquals(exp_options.toArray(), act_options.toArray());
-	}
+        List<String> expectedOptions = Arrays.asList("Contact & Lead Form", "Survey", "Event Registration Form",
+                "Order Form", "Quiz", "Poll", "Blank Form", "Other Form");
+        List<String> actualOptions = new ArrayList<String>();
+
+        for (WebElement option : newFormButton.getOptions()) {
+            actualOptions.add(option.getText());
+        }
+
+        assertEquals("The new form dropdown doesn't have 8 elements", 8, newFormButton.getOptions().size());
+
+        assertArrayEquals("The form dropdown's values does not match the expected values", expectedOptions.toArray(), actualOptions.toArray());
+    }
 }
