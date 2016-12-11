@@ -8,6 +8,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import java.util.List;
 
 public class WebElementsHandler {
     private WebDriver driver;
@@ -47,12 +48,12 @@ public class WebElementsHandler {
         }
     }
     
-	public void dragAndDrop123cf(By element1, By element2, String failText) {
-		if (isElementPresent(element1) && isElementPresent(element2)) {
-			WebElement source = driver.findElement(element1);
-			WebElement target = driver.findElement(element2);
+	public void dragAndDrop(By elementDragged, By elementTarget, String failText) {
+		if (isElementPresent(elementDragged) && isElementPresent(elementTarget)) {
+			WebElement source = this.driver.findElement(elementDragged);
+			WebElement target = this.driver.findElement(elementTarget);
 
-			Actions builder = new Actions(driver);
+			Actions builder = new Actions(this.driver);
 			builder.dragAndDrop(source, target).perform();
 			assertEquals("Untitled", target.getText());
 		} else {
@@ -68,6 +69,10 @@ public class WebElementsHandler {
         else {
             fail("NoSuchElementException: " + element.toString());
         }
+    }
+
+    public List findElementsByPartialId(String id){
+        return this.driver.findElements(By.xpath("//*[contains(@id, '" + id + "')]"));
     }
 
     public void fill(By element, String value) {
