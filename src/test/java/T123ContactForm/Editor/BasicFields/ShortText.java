@@ -12,7 +12,7 @@ public class ShortText extends T123ContactFormMain {
 		this.getWebElementsHandler().click(By.className("dropdown-toggle"));
 		this.getDriver().findElement(By.className("dropdown-menu"));
 		this.getDriver().findElement(By.xpath("/html/body/header/div[1]/div[3]/div[1]/div/ul/li[7]/a")).click();
-		this.getWebElementsHandler().dragAndDrop123cf(By.id("addtextbox"), By.id("col1list"), "Doesn't work");
+		this.getWebElementsHandler().dragAndDrop(By.id("addtextbox"), By.id("col1list"), "Doesn't work");
 		
 	}
 
