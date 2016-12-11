@@ -1,10 +1,13 @@
 package Main;
 
-import static org.junit.Assert.*;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 public class WebElementsHandler {
     private WebDriver driver;
@@ -43,6 +46,20 @@ public class WebElementsHandler {
             }
         }
     }
+    
+	public void dragAndDrop123cf(By element1, By element2, String failText) {
+		if (isElementPresent(element1) && isElementPresent(element2)) {
+			WebElement source = driver.findElement(element1);
+			WebElement target = driver.findElement(element2);
+
+			Actions builder = new Actions(driver);
+			builder.dragAndDrop(source, target).perform();
+			assertEquals("Untitled", target.getText());
+		} else {
+			fail(failText);
+		}
+		
+	}
 
     public void click(By element) {
         if(!this.driver.findElements(element).isEmpty()){
