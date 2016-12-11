@@ -15,9 +15,8 @@ public class RulesMain extends T123ContactFormMain{
 
     @Test
     public void testRulesBasic(){
-        this.getWindowHandler().goToPage("https://www.123contactform.com/index.php?p=settings&id=2312854&tab=6");
+        this.goToPage("https://www.123contactform.com/index.php?p=settings&id=2312854&tab=6");
         WebElement checkRules = this.getDriver().findElement(By.id("rules_onof_checkbox_2"));
-
         if (!checkRules.isSelected()) {
             checkRules.click();
         }
