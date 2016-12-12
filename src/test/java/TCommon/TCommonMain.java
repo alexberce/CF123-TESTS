@@ -63,12 +63,12 @@ public abstract class TCommonMain {
     protected void goToPage(String url){
         if(url.toLowerCase().contains("&id=")) {
             int urlFormId = Integer.valueOf(WindowHandler.getQueryParams(url).get("id").get(0));
-            if(url.toLowerCase().contains("p=edit_fields") && this.getForm().getID() == 0){
+            if(url.toLowerCase().contains("p=edit_fields") && this.getForm().getId() == 0){
                 this.setForm(urlFormId);
             }
             else
             {
-                if(urlFormId != this.getForm().getID()){
+                if(urlFormId != this.getForm().getId()){
                     this.getWindowHandler().goToPage(url + "&p=edit_fields");
                     this.setForm(urlFormId);
                 }

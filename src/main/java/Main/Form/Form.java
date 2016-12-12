@@ -1,6 +1,7 @@
 package Main.Form;
 
 import Main.WebElementsHandler;
+import Main.WindowHandler;
 import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
@@ -8,16 +9,16 @@ import java.util.List;
 
 public class Form {
 
-    private int ID = 0;
+    private int id = 0;
     private WebElementsHandler webElementsHandlerObject;
     private List<Field> fields = new ArrayList<Field>();
 
     public Form(){
-        this.ID = 0;
+        this.id = 0;
     }
 
     public Form(int id, WebElementsHandler webElementsHandlerObject){
-        this.ID = id;
+        this.id = id;
         this.webElementsHandlerObject = webElementsHandlerObject;
 
         this.init();
@@ -26,12 +27,11 @@ public class Form {
     private void init(){
         List<WebElement> editorFields = this.webElementsHandlerObject.findElementsByPartialId(Field.fieldIdIdentifier);
 
-        for(int i=0; i < editorFields.size(); i++){
-            WebElement field = editorFields.get(i);
+        for(WebElement field: editorFields){
             String fieldId =  field.getAttribute("id")
-                                .split(Field.fieldIdIdentifier)[1]
-                                .split("_")[0]
-                                .split("-")[0];
+                    .split(Field.fieldIdIdentifier)[1]
+                    .split("_")[0]
+                    .split("-")[0];
 
             String type = field.getTagName();
 
@@ -45,8 +45,17 @@ public class Form {
         }
     }
 
-    public int getID(){
-        return  this.ID;
+    public int getId(){
+        return  this.id;
+    }
+
+    public int getIdFromUrl(){
+        String url = WindowHandler.getInstance().getCurrentUrl();
+
+        if(url.toLowerCase().contains("&id="))
+            return Integer.valueOf(WindowHandler.getQueryParams(url).get("id").get(0));
+
+        return 0;
     }
 
     public Object getFields(){

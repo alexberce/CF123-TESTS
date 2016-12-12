@@ -1,20 +1,23 @@
 package Main.Form;
 
+import Main.WebElementsHandler;
+import org.openqa.selenium.By;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Field {
     public static String fieldIdIdentifier = "id123-control";
-    private int ID;
+    private int id;
     private String type;
     private List<Option> options = new ArrayList<Option>();
 
     Field(int id){
-        this.ID = id;
+        this.id = id;
     }
 
-    public int getID() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
     public Object getOptions(){
@@ -39,5 +42,9 @@ public class Field {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public void click(){
+        WebElementsHandler.getInstance().click(By.id("myitemlist_myitemlist" + this.getId()));
     }
 }

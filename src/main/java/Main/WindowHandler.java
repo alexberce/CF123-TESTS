@@ -84,6 +84,10 @@ public class WindowHandler {
         }
     }
 
+    public String getCurrentUrl(){
+        return this.getDriver().getCurrentUrl();
+    }
+
     public void switchToIframe(String iframeId){
         this.getDriver().switchTo().frame(iframeId);
     }
