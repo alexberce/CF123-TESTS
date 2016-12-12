@@ -11,15 +11,25 @@ import org.openqa.selenium.interactions.Actions;
 import java.util.List;
 
 public class WebElementsHandler {
-    private WebDriver driver;
+    private static WebDriver driver;
+    private static WebElementsHandler instance;
 
     public WebElementsHandler(WebDriver driver){
-        this.driver = driver;
+        WebElementsHandler.driver = driver;
+        WebElementsHandler.instance = this;
+    }
+
+    public WebElementsHandler getInstance(){
+        return WebElementsHandler.instance;
+    }
+
+    public WebDriver getDriver(){
+        return WebElementsHandler.driver;
     }
 
     public boolean isElementPresent(By by) {
         try {
-            this.driver.findElement(by);
+            this.getDriver().findElement(by);
             return true;
         } catch (NoSuchElementException e) {
             return false;
@@ -28,7 +38,7 @@ public class WebElementsHandler {
 
     public void fillElementOrFail(By element, String value, String failText){
         if (this.isElementPresent(element)) {
-            WebElement webElement = this.driver.findElement(element);
+            WebElement webElement = this.getDriver().findElement(element);
             if (webElement.isDisplayed()) {
                 webElement.sendKeys(value);
             } else {
@@ -39,7 +49,7 @@ public class WebElementsHandler {
 
     public void clickElementOrFail(By element, String failText){
         if (this.isElementPresent(element)) {
-            WebElement webElement = this.driver.findElement(element);
+            WebElement webElement = this.getDriver().findElement(element);
             if (webElement.isDisplayed()) {
                 webElement.click();
             } else {
@@ -50,10 +60,10 @@ public class WebElementsHandler {
     
 	public void dragAndDrop(By elementDragged, By elementTarget, String failText) {
 		if (isElementPresent(elementDragged) && isElementPresent(elementTarget)) {
-			WebElement source = this.driver.findElement(elementDragged);
-			WebElement target = this.driver.findElement(elementTarget);
+			WebElement source = this.getDriver().findElement(elementDragged);
+			WebElement target = this.getDriver().findElement(elementTarget);
 
-			Actions builder = new Actions(this.driver);
+			Actions builder = new Actions(this.getDriver());
 			builder.dragAndDrop(source, target).perform();
 			assertEquals("Untitled", target.getText());
 		} else {
@@ -63,8 +73,8 @@ public class WebElementsHandler {
 	}
 
     public void click(By element) {
-        if(!this.driver.findElements(element).isEmpty()){
-            this.driver.findElement(element).click();
+        if(!this.getDriver().findElements(element).isEmpty()){
+            this.getDriver().findElement(element).click();
         }
         else {
             fail("NoSuchElementException: " + element.toString());
@@ -72,14 +82,14 @@ public class WebElementsHandler {
     }
 
     public List findElementsByPartialId(String id){
-        return this.driver.findElements(By.xpath("//*[contains(@id, '" + id + "')]"));
+        return this.getDriver().findElements(By.xpath("//*[contains(@id, '" + id + "')]"));
     }
 
     public void fill(By element, String value) {
-        this.driver.findElement(element).sendKeys(value);
+        this.getDriver().findElement(element).sendKeys(value);
     }
 
     public String getValue(By element) {
-        return this.driver.findElement(element).getAttribute("value");
+        return this.getDriver().findElement(element).getAttribute("value");
     }
 }

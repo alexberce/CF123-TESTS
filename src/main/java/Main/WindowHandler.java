@@ -12,30 +12,40 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class WindowHandler {
-    private WebDriver driver;
+    private static WindowHandler instance;
+    private static WebDriver driver;
 
     public WindowHandler(WebDriver driver){
-        this.driver = driver;
+        WindowHandler.driver = driver;
 
-        this.driver.manage().window().maximize();
-        this.driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+        this.getDriver().manage().window().maximize();
+        this.getDriver().manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+        WindowHandler.instance = this;
+    }
+
+    public WindowHandler getInstance(){
+        return WindowHandler.instance;
+    }
+
+    private WebDriver getDriver(){
+        return WindowHandler.driver;
     }
 
     public void iAmOnPage(String title){
-        String parentWindowId = this.driver.getWindowHandle();
+        String parentWindowId = this.getDriver().getWindowHandle();
 
         try {
-            String pageTitle = this.driver.switchTo().window(parentWindowId).getTitle();
+            String pageTitle = this.getDriver().switchTo().window(parentWindowId).getTitle();
             if (pageTitle.equals(title)) {
-                assertEquals(title, this.driver.getTitle());
+                assertEquals(title, this.getDriver().getTitle());
             }
         } finally {
-            this.driver.switchTo().window(parentWindowId);
+            this.getDriver().switchTo().window(parentWindowId);
         }
     }
 
     public void goToPage(String url){
-        this.driver.get(url);
+        this.getDriver().get(url);
     }
 
     public static Map<String, List<String>> getQueryParams(String url) {
@@ -68,10 +78,10 @@ public class WindowHandler {
     }
 
     public void switchToIframe(String iframeId){
-        this.driver.switchTo().frame(iframeId);
+        this.getDriver().switchTo().frame(iframeId);
     }
 
     public void switchToDefault(){
-        this.driver.switchTo().defaultContent();
+        this.getDriver().switchTo().defaultContent();
     }
 }
