@@ -12,8 +12,12 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class WindowHandler {
-    private static WindowHandler instance;
+    private static WindowHandler instance = null;
     private static WebDriver driver;
+
+    private WindowHandler(){
+        // Exists only to defeat instantiation.
+    }
 
     public WindowHandler(WebDriver driver){
         WindowHandler.driver = driver;
@@ -23,7 +27,10 @@ public class WindowHandler {
         WindowHandler.instance = this;
     }
 
-    public WindowHandler getInstance(){
+    public static WindowHandler getInstance(){
+        if(WindowHandler.instance == null) {
+            WindowHandler.instance = new WindowHandler();
+        }
         return WindowHandler.instance;
     }
 

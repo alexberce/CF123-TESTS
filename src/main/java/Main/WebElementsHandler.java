@@ -12,19 +12,26 @@ import java.util.List;
 
 public class WebElementsHandler {
     private static WebDriver driver;
-    private static WebElementsHandler instance;
+    private static WebElementsHandler instance = null;
+
+    private WebElementsHandler(){
+        // Exists only to defeat instantiation.
+    }
 
     public WebElementsHandler(WebDriver driver){
         WebElementsHandler.driver = driver;
         WebElementsHandler.instance = this;
     }
 
-    public WebElementsHandler getInstance(){
+    public static WebElementsHandler getInstance(){
+        if(WebElementsHandler.instance == null) {
+            WebElementsHandler.instance = new WebElementsHandler();
+        }
         return WebElementsHandler.instance;
     }
 
     public WebDriver getDriver(){
-        return WebElementsHandler.driver;
+        return driver;
     }
 
     public boolean isElementPresent(By by) {
