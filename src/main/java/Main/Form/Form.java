@@ -11,7 +11,7 @@ public class Form {
 
     private int id = 0;
     private WebElementsHandler webElementsHandlerObject;
-    private List<Field> fields = new ArrayList<Field>();
+    private List<Field> fields = new ArrayList<>();
 
     public Form(){
         this.id = 0;
@@ -22,27 +22,6 @@ public class Form {
         this.webElementsHandlerObject = webElementsHandlerObject;
 
         this.init();
-    }
-
-    private void init(){
-        List<WebElement> editorFields = this.webElementsHandlerObject.findElementsByPartialId(Field.fieldIdIdentifier);
-
-        for(WebElement field: editorFields){
-            String fieldId =  field.getAttribute("id")
-                    .split(Field.fieldIdIdentifier)[1]
-                    .split("_")[0]
-                    .split("-")[0];
-
-            String type = field.getTagName();
-
-            /* I did not use .isEmpty because it triggers @deprecated error in IntelliJ IDEA */
-            if(!"".equals(fieldId.trim())){
-                Field fieldObject = new Field(Integer.valueOf(fieldId));
-                fieldObject.setType(type);
-
-                this.fields.add(fieldObject);
-            }
-        }
     }
 
     public int getId(){
@@ -58,11 +37,38 @@ public class Form {
         return 0;
     }
 
-    public Object getFields(){
-        return this.fields.toArray();
+    private void init(){
+        List<WebElement> editorFields = this.webElementsHandlerObject.findElementsByPartialId("form-editor-fields-container", Field.fieldIdIdentifier);
+
+        for(WebElement field: editorFields){
+            this.addField(field);
+        }
     }
 
-    public Object getField(int id){
+    private void addField(WebElement field){
+        String fieldId =  field.getAttribute("id").split(Field.fieldIdIdentifier)[1];
+
+        if(fieldId.contains("-")){
+            fieldId = fieldId.split("-")[1];
+        }
+
+        String type = field.getTagName();
+
+        /* I did not use .isEmpty because it triggers @deprecated error in IntelliJ IDEA */
+        if(!"".equals(fieldId.trim()) && 0 < Integer.valueOf(fieldId) && !this.fields.contains(new Field(Integer.valueOf(fieldId)))){
+
+            Field fieldObject = new Field(Integer.valueOf(fieldId));
+            fieldObject.setType(type);
+
+            this.fields.add(fieldObject);
+        }
+    }
+
+    public List<Field> getFields(){
+        return this.fields;
+    }
+
+    public Field getField(int id){
         return this.fields.get(id);
     }
 

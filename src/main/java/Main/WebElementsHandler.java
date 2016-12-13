@@ -92,6 +92,10 @@ public class WebElementsHandler {
         return this.getDriver().findElements(By.xpath("//*[contains(@id, '" + id + "')]"));
     }
 
+    public List findElementsByPartialId(String parentClass, String id){
+        return this.getDriver().findElements(By.xpath("//*[contains(@class, '" + parentClass + "')] //*[contains(@id, '" + id + "')]"));
+    }
+
     public void fill(By element, String value) {
         this.getDriver().findElement(element).sendKeys(value);
     }

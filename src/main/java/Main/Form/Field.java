@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Field {
-    public static String fieldIdIdentifier = "id123-control";
+    public static String fieldIdIdentifier = "myitemlist_myitemlist";
     private int id;
     private String type;
     private List<Option> options = new ArrayList<Option>();
@@ -45,6 +45,24 @@ public class Field {
     }
 
     public void click(){
-        WebElementsHandler.getInstance().click(By.id("myitemlist_myitemlist" + this.getId()));
+        //TODO: Handle captcha because it has a differnt ID
+        WebElementsHandler.getInstance().click(By.id(Field.fieldIdIdentifier + this.getId()));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Field)) return false;
+
+        Field field = (Field) o;
+
+        return getId() == field.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId();
+        result = 31 * result + (getType() != null ? getType().hashCode() : 0);
+        return result;
     }
 }
