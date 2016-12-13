@@ -20,6 +20,9 @@ public class ShortText extends T123ContactFormMain {
         //Click on the first field of the form
         this.getForm().getField(0).click();
 
+        //Wait 2 seconds so we can see the clicks
+        this.getWindowHandler().wait(2);
+
         //Click on submit button
         this.getForm().getField(this.getForm().getFields().size()).click();
     }

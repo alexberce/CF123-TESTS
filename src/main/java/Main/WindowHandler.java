@@ -88,6 +88,14 @@ public class WindowHandler {
         return this.getDriver().getCurrentUrl();
     }
 
+    public void wait(int seconds){
+        try {
+            this.getDriver().wait(seconds);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void switchToIframe(String iframeId){
         this.getDriver().switchTo().frame(iframeId);
     }
