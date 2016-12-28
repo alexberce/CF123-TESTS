@@ -56,23 +56,28 @@ public abstract class TCommonMain {
         return TCommonMain.Form;
     }
 
-    protected void setForm(int id){
-        TCommonMain.Form = new Form(id, this.getWebElementsHandler());
+    /* This method should be called only when we have a form ID in the URL */
+    protected void setForm(){
+        String url = this.getDriver().getCurrentUrl();
+        if(url.toLowerCase().contains("&id=")) {
+            this.getWindowHandler().goToPage(url + "&p=edit_fields");
+            this.getWindowHandler().wait(1);
+            int urlFormId = Integer.valueOf(WindowHandler.getQueryParams(url).get("id").get(0));
+            TCommonMain.Form = new Form(urlFormId, this.getWebElementsHandler());
+        }
+
+        this.getWindowHandler().goToPage(url);
     }
 
     protected void goToPage(String url){
-        if(url.toLowerCase().contains("&id=")) {
+        try {
             int urlFormId = Integer.valueOf(WindowHandler.getQueryParams(url).get("id").get(0));
-            if(url.toLowerCase().contains("p=edit_fields") && this.getForm().getId() == 0){
-                this.setForm(urlFormId);
+            if(url.toLowerCase().contains("&id=") && (this.getForm().getId() == 0 || urlFormId != this.getForm().getId())) {
+                this.setForm();
             }
-            else
-            {
-                if(urlFormId != this.getForm().getId()){
-                    this.getWindowHandler().goToPage(url + "&p=edit_fields");
-                    this.setForm(urlFormId);
-                }
-            }
+        }
+        catch (NumberFormatException e){
+            //We don't have a form ID in the URL
         }
 
         this.getWindowHandler().goToPage(url);

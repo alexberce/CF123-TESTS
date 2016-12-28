@@ -89,9 +89,10 @@ public class WindowHandler {
     }
 
     public void wait(int seconds){
+        System.out.printf("\nWaiting %d seconds", seconds);
         try {
-            this.getDriver().wait(seconds);
-        } catch (InterruptedException e) {
+            Thread.sleep(seconds * 1000);
+        } catch (InterruptedException | IllegalMonitorStateException e) {
             e.printStackTrace();
         }
     }

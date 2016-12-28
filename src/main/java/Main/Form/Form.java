@@ -47,20 +47,25 @@ public class Form {
 
     private void addField(WebElement field){
         String fieldId =  field.getAttribute("id").split(Field.fieldIdIdentifier)[1];
-
         if(fieldId.contains("-")){
             fieldId = fieldId.split("-")[1];
         }
 
         String type = field.getTagName();
 
-        /* I did not use .isEmpty because it triggers @deprecated error in IntelliJ IDEA */
-        if(!"".equals(fieldId.trim()) && 0 < Integer.valueOf(fieldId) && !this.fields.contains(new Field(Integer.valueOf(fieldId)))){
+        try {
+            int fieldIdInt = Integer.valueOf(fieldId);
 
-            Field fieldObject = new Field(Integer.valueOf(fieldId));
-            fieldObject.setType(type);
+            if(0 < fieldIdInt && !this.fields.contains(new Field(fieldIdInt))){
 
-            this.fields.add(fieldObject);
+                Field fieldObject = new Field(Integer.valueOf(fieldId));
+                fieldObject.setType(type);
+
+                this.fields.add(fieldObject);
+            }
+        }
+        catch(NumberFormatException e){
+            System.out.println("Field ID Is not integer");
         }
     }
 
@@ -68,8 +73,25 @@ public class Form {
         return this.fields;
     }
 
-    public Field getField(int id){
-        return this.fields.get(id);
+    public Field getFieldByPosition(int position){
+        return this.fields.get(position);
+    }
+
+    public Field getFieldByType(String type){
+        Field field;
+        switch(type){
+            case "submit":
+                field = this.getFieldByPosition(Field.submitButtonId);
+                break;
+            case "captcha":
+                field = this.getFieldByPosition(Field.captchaId);
+                break;
+            default:
+                field = this.getFieldByPosition(0);
+                break;
+        }
+
+        return field;
     }
 
     public void setFields(){

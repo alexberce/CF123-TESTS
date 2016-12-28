@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Field {
+
+    /* This is -2 actually */
+    public static final int captchaId = 2;
+    public static final int submitButtonId = 10000;
+
     public static String fieldIdIdentifier = "myitemlist_myitemlist";
     private int id;
     private String type;
