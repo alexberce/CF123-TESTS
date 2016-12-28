@@ -35,8 +35,9 @@ public class ShortText extends T123ContactFormMain {
         this.getWindowHandler().wait(1);
 
         //Click on submit button
-        //This doesn't work for now. Neither does captcha.
-        //this.getForm().getFieldByType("submit").click();
+        this.getForm().getFieldByType("submit").click();
+
+        this.getWindowHandler().wait(2);
     }
 
 }

@@ -2,6 +2,7 @@ package Main.Form;
 
 import Main.WebElementsHandler;
 import Main.WindowHandler;
+import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
@@ -73,6 +74,15 @@ public class Form {
         return this.fields;
     }
 
+    public Field getFieldById(int id) throws NotFoundException{
+        for(Field field: this.fields){
+            if(field.getId() == id)
+                return field;
+        }
+
+        throw new NotFoundException("Unable to locate field with id: " + id);
+    }
+
     public Field getFieldByPosition(int position){
         return this.fields.get(position);
     }
@@ -81,10 +91,11 @@ public class Form {
         Field field;
         switch(type){
             case "submit":
-                field = this.getFieldByPosition(Field.submitButtonId);
+                field = this.getFieldById(Field.submitButtonId);
                 break;
             case "captcha":
-                field = this.getFieldByPosition(Field.captchaId);
+                /* This does not work for now */
+                field = this.getFieldById(Field.captchaId);
                 break;
             default:
                 field = this.getFieldByPosition(0);
