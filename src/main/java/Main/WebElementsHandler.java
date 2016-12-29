@@ -33,7 +33,7 @@ public class WebElementsHandler {
 
     public boolean isElementPresent(By by) {
         try {
-            this.getDriver().findElement(by);
+            this.findElement(by);
             return true;
         } catch (NoSuchElementException e) {
             return false;
@@ -42,7 +42,7 @@ public class WebElementsHandler {
 
     public void fillElementOrFail(By element, String value, String failText){
         if (this.isElementPresent(element)) {
-            WebElement webElement = this.getDriver().findElement(element);
+            WebElement webElement = this.findElement(element);
             if (webElement.isDisplayed()) {
                 webElement.sendKeys(value);
             } else {
@@ -53,7 +53,7 @@ public class WebElementsHandler {
 
     public void clickElementOrFail(By element, String failText){
         if (this.isElementPresent(element)) {
-            WebElement webElement = this.getDriver().findElement(element);
+            WebElement webElement = this.findElement(element);
             if (webElement.isDisplayed()) {
                 webElement.click();
             } else {
@@ -64,7 +64,7 @@ public class WebElementsHandler {
 
     public void deleteAndWriteNewValue(By element, String newValue, String failText) {
         if (this.isElementPresent(element)) {
-            WebElement webElement = this.getDriver().findElement(element);
+            WebElement webElement = this.findElement(element);
             if (webElement.isDisplayed()) {
                 webElement.findElement(element).sendKeys(Keys.chord(Keys.CONTROL, "a"), newValue);
             } else {
@@ -75,8 +75,8 @@ public class WebElementsHandler {
 
 	public void dragAndDrop(By elementDragged, By elementTarget, String failText) {
 		if (isElementPresent(elementDragged) && isElementPresent(elementTarget)) {
-			WebElement source = this.getDriver().findElement(elementDragged);
-			WebElement target = this.getDriver().findElement(elementTarget);
+			WebElement source = this.findElement(elementDragged);
+			WebElement target = this.findElement(elementTarget);
 
 			Actions builder = new Actions(this.getDriver());
 			builder.dragAndDrop(source, target).perform();
@@ -108,8 +108,8 @@ public class WebElementsHandler {
 
     public void checkTheHoverDropdown(By element1, By element2, By element3) {
         Actions action = new Actions(this.getDriver());
-        WebElement we = this.getDriver().findElement(element1);
-        action.moveToElement(we).moveToElement(this.getDriver().findElement(element2)).click().build().perform();
+        WebElement we = this.findElement(element1);
+        action.moveToElement(we).moveToElement(this.findElement(element2)).click().build().perform();
         if (this.isElementPresent(element3)) {
             System.out.println("Working!");
         } else {
@@ -118,37 +118,40 @@ public class WebElementsHandler {
     }
 
     public void click(By element) {
-        if(!this.getDriver().findElements(element).isEmpty()){
-            this.getDriver().findElement(element).click();
+        if(!this.findElements(element).isEmpty()){
+            this.findElement(element).click();
         }
         else {
             fail("NoSuchElementException: " + element.toString());
         }
     }
 
-    public WebElement findElement(By element){
-        WebElement webElement = this.getDriver().findElement(element);
-        return webElement;
+    public WebElement findElement(By by){
+        return this.getDriver().findElement(by);
+    }
+
+    public List findElements(By by){
+        return this.getDriver().findElements(by);
     }
 
     public List findElementsByPartialId(String id){
-        return this.getDriver().findElements(By.xpath("//*[contains(@id, '" + id + "')]"));
+        return this.findElements(By.xpath("//*[contains(@id, '" + id + "')]"));
     }
 
     public List findElementsByPartialId(String parentClass, String id){
-        return this.getDriver().findElements(By.xpath("//*[contains(@class, '" + parentClass + "')] //*[contains(@id, '" + id + "')]"));
+        return this.findElements(By.xpath("//*[contains(@class, '" + parentClass + "')] //*[contains(@id, '" + id + "')]"));
     }
 
     public void fill(By element, String value) {
-        this.getDriver().findElement(element).sendKeys(value);
+        this.findElement(element).sendKeys(value);
     }
 
     public String findElementAndGetValue(By element) {
-        return this.getDriver().findElement(element).getAttribute("value");
+        return this.findElement(element).getAttribute("value");
     }
 
     public String getElementCSSProperty(By element, String cssProperty){
-        WebElement webElement = this.getDriver().findElement(element);
+        WebElement webElement = this.findElement(element);
         return this.getElementCSSProperty(webElement, cssProperty);
     }
 
