@@ -1,14 +1,11 @@
 package Main;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+
 import java.util.List;
+
+import static org.junit.Assert.fail;
 
 public class WebElementsHandler {
     private static WebDriver driver;
@@ -64,7 +61,18 @@ public class WebElementsHandler {
             }
         }
     }
-    
+
+    public void deleteAndWriteNewValue(By element, String newValue, String failText) {
+        if (this.isElementPresent(element)) {
+            WebElement webElement = this.getDriver().findElement(element);
+            if (webElement.isDisplayed()) {
+                webElement.findElement(element).sendKeys(Keys.chord(Keys.CONTROL, "a"), newValue);
+            } else {
+                fail(failText);
+            }
+        }
+    }
+
 	public void dragAndDrop(By elementDragged, By elementTarget, String failText) {
 		if (isElementPresent(elementDragged) && isElementPresent(elementTarget)) {
 			WebElement source = this.getDriver().findElement(elementDragged);
@@ -79,6 +87,39 @@ public class WebElementsHandler {
 		}
 		
 	}
+
+    public void checkToSeeIfIsBold(By element, String failText) {
+        JavascriptExecutor js = (JavascriptExecutor) this.getDriver();
+        WebElement we = this.getDriver().findElement(element);
+        String fontWeight = (String) js.executeScript("return getComputedStyle(arguments[0]).getPropertyValue('font-weight');", we);
+        if (fontWeight.trim().equals("bold")) {
+            System.out.println("Is Bold");
+        } else {
+            System.out.println("Not Bold - " + fontWeight);
+        }
+    }
+
+    public void checkToSeeIfIsItalic(By element, String failText) {
+        JavascriptExecutor js = (JavascriptExecutor) this.getDriver();
+        WebElement we = this.getDriver().findElement(element);
+        String fontStyle = (String) js.executeScript("return getComputedStyle(arguments[0]).getPropertyValue('font-style');", we);
+        if (fontStyle.trim().equals("italic")) {
+            System.out.println("Is Italic");
+        } else {
+            System.out.println("Not Italic - " + fontStyle);
+        }
+    }
+
+    public void checkTheHoverDropdown(By element1, By element2, By element3) {
+        Actions action = new Actions(this.getDriver());
+        WebElement we = this.getDriver().findElement(element1);
+        action.moveToElement(we).moveToElement(this.getDriver().findElement(element2)).click().build().perform();
+        if (this.isElementPresent(element3)) {
+            System.out.println("Working!");
+        } else {
+            System.out.println("Not working!");
+        }
+    }
 
     public void click(By element) {
         if(!this.getDriver().findElements(element).isEmpty()){
