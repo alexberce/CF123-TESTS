@@ -89,9 +89,7 @@ public class WebElementsHandler {
 	}
 
     public void checkToSeeIfIsBold(By element, String failText) {
-        JavascriptExecutor js = (JavascriptExecutor) this.getDriver();
-        WebElement we = this.getDriver().findElement(element);
-        String fontWeight = (String) js.executeScript("return getComputedStyle(arguments[0]).getPropertyValue('font-weight');", we);
+        String fontWeight = this.getElementCSSProperty(element, "font-weight");
         if (fontWeight.trim().equals("bold")) {
             System.out.println("Is Bold");
         } else {
@@ -100,9 +98,7 @@ public class WebElementsHandler {
     }
 
     public void checkToSeeIfIsItalic(By element, String failText) {
-        JavascriptExecutor js = (JavascriptExecutor) this.getDriver();
-        WebElement we = this.getDriver().findElement(element);
-        String fontStyle = (String) js.executeScript("return getComputedStyle(arguments[0]).getPropertyValue('font-style');", we);
+        String fontStyle = this.getElementCSSProperty(element, "font-style");
         if (fontStyle.trim().equals("italic")) {
             System.out.println("Is Italic");
         } else {
@@ -130,6 +126,11 @@ public class WebElementsHandler {
         }
     }
 
+    public WebElement findElement(By element){
+        WebElement webElement = this.getDriver().findElement(element);
+        return webElement;
+    }
+
     public List findElementsByPartialId(String id){
         return this.getDriver().findElements(By.xpath("//*[contains(@id, '" + id + "')]"));
     }
@@ -142,7 +143,17 @@ public class WebElementsHandler {
         this.getDriver().findElement(element).sendKeys(value);
     }
 
-    public String getValue(By element) {
+    public String findElementAndGetValue(By element) {
         return this.getDriver().findElement(element).getAttribute("value");
+    }
+
+    public String getElementCSSProperty(By element, String cssProperty){
+        WebElement webElement = this.getDriver().findElement(element);
+        return this.getElementCSSProperty(webElement, cssProperty);
+    }
+
+    public String getElementCSSProperty(WebElement webElement, String cssProperty){
+        JavascriptExecutor js = (JavascriptExecutor) this.getDriver();
+        return (String) js.executeScript("return getComputedStyle(arguments[0]).getPropertyValue('" + cssProperty + "');", webElement);
     }
 }
