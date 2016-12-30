@@ -1,10 +1,15 @@
 package Main.Form;
 
+import Main.Form.FieldOptions.Bold;
+import Main.Form.FieldOptions.Italic;
 import Main.WebElementsHandler;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NotFoundException;
+import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Field {
 
@@ -13,12 +18,18 @@ public class Field {
     public static final int submitButtonId = 10000;
 
     public static String fieldIdIdentifier = "myitemlist_myitemlist";
+    public static String outputTitleIdIdentifier = "id123-title";
+
+    //TODO: Set this variable and return it on getOutputTitleElement call
+    private WebElement outputTitleElement;
+
     private int id;
     private String type;
-    private List<Option> options = new ArrayList<Option>();
+    private List<Object> options = new ArrayList<Object>();
 
     Field(int id){
         this.id = id;
+        this.initOptions();
     }
 
     public int getId() {
@@ -29,16 +40,29 @@ public class Field {
         return this.options.toArray();
     }
 
-    public Object getOption(int id){
-        return this.options.get(id);
+    public Object getOption(String optionName){
+        for(Object o: this.options) {
+            if (o instanceof Bold) {
+                Bold option = (Bold) o;
+                if (Objects.equals(option.getName(), optionName))
+                    return option;
+            } else if (o instanceof Italic){
+                Italic option = (Italic) o;
+                if (Objects.equals(option.getName(), optionName))
+                    return option;
+            }
+
+        }
+        throw new NotFoundException("Unable to locate field with id: " + id);
     }
 
-    public void setOptions(String property, String value){
-        for(int i=0; i<=this.options.size(); i++) {
-            if(this.options.get(i).getName().equals(property)){
-                this.options.get(i).setValue(value);
-            }
-        }
+    public void initOptions(){
+        //TODO: Add the options in a dynamic way based on the field type (maybe?)
+        Object fieldOption1 = new Bold(this.getId());
+        this.options.add(fieldOption1);
+
+        Object fieldOption2 = new Italic(this.getId());
+        this.options.add(fieldOption2);
     }
 
     public String getType() {
@@ -52,6 +76,14 @@ public class Field {
     public void click(){
         //TODO: Handle captcha because it has a differnt ID
         WebElementsHandler.getInstance().click(By.id(Field.fieldIdIdentifier + this.getId()));
+    }
+
+    public WebElement getOutputTitleElement(){
+        return Field.getOutputTitleElement(this.getId());
+    }
+
+    public static WebElement getOutputTitleElement(int id){
+        return WebElementsHandler.getInstance().findElement(By.id(Field.outputTitleIdIdentifier + id));
     }
 
     @Override
