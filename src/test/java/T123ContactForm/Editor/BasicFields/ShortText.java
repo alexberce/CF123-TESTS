@@ -1,13 +1,19 @@
 package T123ContactForm.Editor.BasicFields;
 
+import Main.Form.Field;
+import Main.Form.FieldOptions.Bold;
+import Main.Form.FieldOptions.Italic;
 import T123ContactForm.T123ContactFormMain;
 import org.junit.Test;
 import org.openqa.selenium.By;
+
+import static org.junit.Assert.assertEquals;
 
 public class ShortText extends T123ContactFormMain {
 
     @Test
     public void testDragAndDropShortText() {
+        /* TODO: Remove the waiting where is not needed */
         this.getWebElementsHandler().click(By.className("dropdown-toggle"));
         this.getDriver().findElement(By.className("dropdown-menu"));
         this.getDriver().findElement(By.xpath("/html/body/header/div[1]/div[3]/div[1]/div/ul/li[7]/a")).click();
@@ -15,35 +21,37 @@ public class ShortText extends T123ContactFormMain {
 
         this.setForm();
 
+        /* Get the first field on the form */
+        Field firstField = this.getForm().getFieldByPosition(0);
+
+        /* Click the field */
+        firstField.click();
+
+        /* Initialize Bold and Italic options */
+        /* TODO: This initialization should be done automatically */
+        Bold boldOption = (Bold) firstField.getOption("Bold");
+        Italic italicOption = (Italic) firstField.getOption("Italic");
+
+        /* Test the bold Option */
+        boldOption.enable();
+        assertEquals("The bold option should be enabled", true, boldOption.enabled());
+
         this.getWindowHandler().wait(1);
 
-        //Click on the first field of the form
-        this.getForm().getFieldByPosition(0).click();
+        boldOption.disable();
+        assertEquals("The bold option should be disabled", true, boldOption.disabled());
         this.getWindowHandler().wait(1);
 
-        // Click on the bold button
-        this.getWebElementsHandler().clickElementOrFail(By.id("bold_label"), "The bold button doesn't work");
+        /* Test the italic Option */
+        italicOption.enable();
+        assertEquals("The italic option should be enabled", true, italicOption.enabled());
+
         this.getWindowHandler().wait(1);
 
-        // Check the label to see if it is bold
-        this.getWebElementsHandler().checkToSeeIfIsBold(By.cssSelector(".fontbold"), "The label is not bold");
+        italicOption.disable();
+        assertEquals("The italic option should be disabled", true, italicOption.disabled());
         this.getWindowHandler().wait(1);
 
-        // Click again to unbold the label
-        this.getWebElementsHandler().clickElementOrFail(By.id("bold_label"), "The bold button doesn't work");
-        this.getWindowHandler().wait(1);
-
-        // Click on the italic button
-        this.getWebElementsHandler().clickElementOrFail(By.id("italic_label"), "The italic button doesn't work");
-        this.getWindowHandler().wait(1);
-
-        // Check the label to see if it is italic
-        this.getWebElementsHandler().checkToSeeIfIsItalic(By.cssSelector(".fontitalic"), "The label is not italic");
-        this.getWindowHandler().wait(1);
-
-        // Click again on the button to make non-italic
-        this.getWebElementsHandler().clickElementOrFail(By.id("italic_label"), "The italic button doesn't work");
-        this.getWindowHandler().wait(1);
 
         // Check to see that the label is hidden
         this.getWebElementsHandler().checkTheHoverDropdown(By.id("poz"), By.id("poz-anc-1"), By.cssSelector(".label-hidden"));
